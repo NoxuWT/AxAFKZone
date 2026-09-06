@@ -3,6 +3,7 @@ package com.artillexstudios.axafkzone;
 import com.artillexstudios.axafkzone.commands.CommandManager;
 import com.artillexstudios.axafkzone.listeners.WandListeners;
 import com.artillexstudios.axafkzone.listeners.WorldListeners;
+import com.artillexstudios.axafkzone.placeholders.AxAFKZonePlaceholders;
 import com.artillexstudios.axafkzone.schedulers.TickZones;
 import com.artillexstudios.axafkzone.utils.FileUtils;
 import com.artillexstudios.axafkzone.utils.NumberUtils;
@@ -63,6 +64,10 @@ public final class AxAFKZone extends AxPlugin {
 
         metrics = new AxMetrics(this, 9);
         metrics.start();
+
+        if (getServer().getPluginManager().getPlugin("PlaceholderAPI") != null) {
+            new AxAFKZonePlaceholders().register();
+        }
 
         UpdateNotifier.init(CONFIG, LANG);
         if (CONFIG.getBoolean("update-notifier.enabled", true)) new UpdateNotifier();

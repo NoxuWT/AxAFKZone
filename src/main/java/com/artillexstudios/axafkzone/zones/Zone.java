@@ -275,6 +275,14 @@ public class Zone {
         settings.save();
     }
 
+    public boolean isPlayerInZone(Player player) {
+        return zonePlayers.containsKey(player);
+    }
+
+    public int getPlayerTime(Player player) {
+        return zonePlayers.getOrDefault(player, -1);
+    }
+
     public String getName() {
         return name;
     }
