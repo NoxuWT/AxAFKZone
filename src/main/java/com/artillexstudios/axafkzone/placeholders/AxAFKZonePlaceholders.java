@@ -8,11 +8,22 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Locale;
+
 public class AxAFKZonePlaceholders extends PlaceholderExpansion {
+    private final String identifier;
+
+    public AxAFKZonePlaceholders() {
+        this("axafkzone");
+    }
+
+    public AxAFKZonePlaceholders(String identifier) {
+        this.identifier = identifier;
+    }
 
     @Override
     public @NotNull String getIdentifier() {
-        return "axzoneafk";
+        return identifier;
     }
 
     @Override
@@ -34,16 +45,16 @@ public class AxAFKZonePlaceholders extends PlaceholderExpansion {
     public @Nullable String onPlaceholderRequest(Player player, @NotNull String params) {
         if (player == null) return "";
 
-        // %axzoneafk_running% — true si le joueur est dans une zone AFK
-        if (params.equals("running")) {
+        String normalized = params.toLowerCase(Locale.ROOT).replace('-', '_');
+
+        if (normalized.equals("running")) {
             for (Zone zone : Zones.getZones().values()) {
                 if (zone.isPlayerInZone(player)) return "true";
             }
             return "false";
         }
 
-        // %axzoneafk_time% — temps passé dans la zone
-        if (params.equals("time")) {
+        if (normalized.equals("time")) {
             for (Zone zone : Zones.getZones().values()) {
                 int seconds = zone.getPlayerTime(player);
                 if (seconds >= 0) return TimeUtils.fancyTime(seconds * 1_000L);
@@ -51,8 +62,7 @@ public class AxAFKZonePlaceholders extends PlaceholderExpansion {
             return "0";
         }
 
-        // %axzoneafk_time_until_next% — temps avant la prochaine récompense
-        if (params.equals("time_until_next")) {
+        if (normalized.equals("time_until_next") || normalized.equals("timeuntilnext") || normalized.equals("time_until")) {
             for (Zone zone : Zones.getZones().values()) {
                 long ms = zone.timeUntilNext(player);
                 if (ms >= 0) return TimeUtils.fancyTime(ms);

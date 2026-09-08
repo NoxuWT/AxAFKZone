@@ -16,6 +16,7 @@ in-zone:
   actionbar: ""
   # remove the section to disable
   bossbar:
+    enabled: true
     name: "&#CC0055⌚ &7| &#FF8855ʏᴏᴜ ᴀʀᴇ ᴀғᴋ &7| &#FFBB00Next reward in: &#CC0055%time%"
     # colors: https://javadoc.io/static/net.kyori/adventure-api/4.17.0/net/kyori/adventure/bossbar/BossBar.Color.html
     color: RED

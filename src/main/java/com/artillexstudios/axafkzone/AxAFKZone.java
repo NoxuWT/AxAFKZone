@@ -66,7 +66,8 @@ public final class AxAFKZone extends AxPlugin {
         metrics.start();
 
         if (getServer().getPluginManager().getPlugin("PlaceholderAPI") != null) {
-            new AxAFKZonePlaceholders().register();
+            new AxAFKZonePlaceholders("axafkzone").register();
+            new AxAFKZonePlaceholders("axzoneafk").register();
         }
 
         UpdateNotifier.init(CONFIG, LANG);

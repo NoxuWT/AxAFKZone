@@ -12,6 +12,7 @@ timer-format: 1
 command-aliases:
   - "axafkzone"
   - "afkzone"
+  - "afk"
   - "axaz"
 
 # should the timer reset after a player gets their afk zone rewards?

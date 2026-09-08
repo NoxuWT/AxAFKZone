@@ -115,12 +115,23 @@ public class Zone {
         return count;
     }
 
+    private boolean isBossbarEnabled() {
+        Section section = settings.getSection("in-zone.bossbar");
+        return section != null && section.getBoolean("enabled", true);
+    }
+
     private void enter(Player player) {
         BossBar bossBar = bossbars.remove(player);
         if (bossBar != null) bossBar.remove();
 
         msg.sendLang(player, "messages.entered", Map.of("%time%", TimeUtils.fancyTime(rewardSeconds * 1_000L)));
         zonePlayers.put(player, 0);
+
+        if (!isBossbarEnabled()) {
+            sendTitle(player);
+            sendActionbar(player);
+            return;
+        }
 
         Section section;
         if ((section = settings.getSection("in-zone.bossbar")) != null) {
@@ -173,13 +184,19 @@ public class Zone {
     }
 
     private void updateBossbar(Player player) {
+        if (!isBossbarEnabled()) {
+            BossBar bossBar = bossbars.remove(player);
+            if (bossBar != null) bossBar.remove();
+            return;
+        }
+
         BossBar bossBar = bossbars.get(player);
         if (bossBar == null) return;
         Integer time = zonePlayers.get(player);
         if (time == null) return;
 
         int barDirection = CONFIG.getInt("bossbar-direction", 0);
-        float calculated = (float) (time % rewardSeconds) / (rewardSeconds - 1);
+        float calculated = rewardSeconds <= 1 ? 0f : (float) (time % rewardSeconds) / (rewardSeconds - 1);
         bossBar.progress(Math.clamp(barDirection == 0 ? 1f - calculated : calculated, 0f, 1f));
 
         Section section;
